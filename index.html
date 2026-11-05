@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Word Guessing Game - Premium 3D Casual Game</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Floating Background Elements -->
+  <div class="ambient-background" aria-hidden="true">
+    <div class="gradient-mesh"></div>
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="floating-orb orb-3"></div>
+    <div class="floating-orb orb-4"></div>
+    <div class="floating-orb orb-5"></div>
+    <canvas id="particlesCanvas"></canvas>
+  </div>
+
+  <!-- Confetti Canvas for Victory Celebrations -->
+  <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+
+  <!-- Main Game Container -->
+  <div class="app-wrapper">
+    <!-- Top Utility Bar: Sound, Stats, Categories, Difficulties -->
+    <header class="top-nav-bar glass-panel">
+      <!-- Category & Difficulty Selector Group -->
+      <div class="selectors-group">
+        <div class="select-wrapper">
+          <label for="categorySelect" class="sr-only">Choose Category</label>
+          <div class="custom-select-pill">
+            <svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <select id="categorySelect" aria-label="Game Category">
+              <option value="programming" selected>💻 Programming</option>
+              <option value="technology">🚀 Technology</option>
+              <option value="animals">🐾 Animals</option>
+              <option value="fruits">🍓 Fruits</option>
+              <option value="sports">⚽ Sports</option>
+              <option value="general">🌍 General Knowledge</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="select-wrapper">
+          <label for="difficultySelect" class="sr-only">Choose Difficulty</label>
+          <div class="custom-select-pill">
+            <svg class="select-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <select id="difficultySelect" aria-label="Game Difficulty">
+              <option value="easy">⭐ Easy (3-5)</option>
+              <option value="medium" selected>⭐⭐ Medium (6-8)</option>
+              <option value="hard">⭐⭐⭐ Hard (9+)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons: Sound, Stats, Reset Score -->
+      <div class="nav-actions">
+        <!-- Sound Mute/Unmute Toggle Button -->
+        <button id="soundToggleBtn" class="btn-icon-3d" type="button" aria-label="Toggle Sound" title="Sound: Off (Click to enable)">
+          <svg class="sound-icon-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <svg class="sound-icon-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+
+        <!-- Stats Modal Trigger -->
+        <button id="statsModalBtn" class="btn-icon-3d" type="button" aria-label="View Statistics" title="Game Statistics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+            <path d="M4 22h16"></path>
+            <path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"></path>
+            <path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"></path>
+            <path d="M6 4h12v7a6 6 0 0 1-12 0V4Z"></path>
+          </svg>
+        </button>
+
+        <!-- Reset Score Button -->
+        <button id="resetScoreBtn" class="btn-reset-3d" type="button" aria-label="Reset Score" title="Reset Total Score to 0">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon-svg">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+          </svg>
+          <span class="btn-text">Reset Score</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Game Window / Glass Console -->
+    <main class="game-console glass-panel">
+      <!-- 2. Game Header with Game Controller Icon, Crown & Yellow GAME Highlight -->
+      <header class="game-header">
+        <div class="header-content">
+          <div class="game-icon-badge">
+            <!-- Modern 3D Style Game Controller Icon -->
+            <svg class="game-controller-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="6" y1="12" x2="10" y2="12"></line>
+              <line x1="8" y1="10" x2="8" y2="14"></line>
+              <line x1="15" y1="13" x2="15.01" y2="13"></line>
+              <line x1="18" y1="11" x2="18.01" y2="11"></line>
+              <rect x="2" y="6" width="20" height="12" rx="6"></rect>
+            </svg>
+          </div>
+          <h1 class="game-title">
+            Word Guessing
+            <span class="title-highlight">
+              <!-- Golden Crown Icon perched atop GAME -->
+              <svg class="crown-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M5 16L3 5l5.5 5L12 4l3.5 6L21 5l-2 11H5zm14 3c0 .6-.4 1-1 1H6c-.6 0-1-.4-1-1v-1h14v1z"/>
+              </svg>
+              Game
+            </span>
+          </h1>
+        </div>
+      </header>
+
+      <!-- 3. Game Dashboard: Score Card & Attempts Card -->
+      <section class="game-dashboard" aria-label="Game Dashboard">
+        <!-- Score Card -->
+        <div class="dash-card score-card">
+          <div class="card-icon-container star-icon-glow">
+            <svg class="dash-icon star-icon" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+          </div>
+          <div class="card-details">
+            <span class="card-label">SCORE</span>
+            <div class="card-value-row">
+              <span id="scoreDisplay" class="card-value">0</span>
+              <span id="scoreDeltaBadge" class="score-delta-badge" aria-hidden="true">+1</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Attempts Card -->
+        <div class="dash-card attempts-card">
+          <div class="card-icon-container heart-icon-glow">
+            <svg class="dash-icon heart-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </div>
+          <div class="card-details">
+            <div class="attempts-header">
+              <span class="card-label">ATTEMPTS</span>
+              <span id="attemptsText" class="attempts-counter">6 / 6</span>
+            </div>
+            <!-- Visual Progress Bar for Attempts -->
+            <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="6" aria-valuenow="6">
+              <div id="attemptsProgressBar" class="progress-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Hint Section -->
+      <section class="hint-card glass-panel" aria-label="Word Hint">
+        <div class="hint-header">
+          <div class="hint-icon-badge">
+            <svg class="lightbulb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18h6"></path>
+              <path d="M10 22h4"></path>
+              <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"></path>
+            </svg>
+          </div>
+          <span class="hint-tag">HINT</span>
+          <span id="categoryBadge" class="hint-category-badge">Programming</span>
+          <button id="extraClueQuickBtn" class="btn-extra-clue-pill" type="button" title="Show More Details (Free)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="clue-sparkle-icon">
+              <path d="M12 3v3m0 12v3M3 12h3m12 0h3"></path>
+              <circle cx="12" cy="12" r="4"></circle>
+            </svg>
+            <span>Show Another Clue (Free)</span>
+          </button>
+        </div>
+        <p id="hintText" class="hint-description">
+          Hint: A modern, versatile programming language.
+        </p>
+        <div id="extraClueBox" class="extra-clue-box" style="display: none;">
+          <div class="extra-clue-label">
+            <span class="extra-clue-icon">🔍</span>
+            <strong>Detailed Clue:</strong>
+          </div>
+          <p id="extraHintText" class="extra-clue-description"></p>
+        </div>
+      </section>
+
+      <!-- 5. Hidden Word Display (Individual 3D Rounded Letter Boxes) -->
+      <section class="word-display-section" aria-label="Hidden Word">
+        <div id="wordContainer" class="word-container">
+          <!-- Dynamically generated 3D letter boxes -->
+        </div>
+
+        <!-- Hint Counter & Assistance Status Bar -->
+        <div class="word-status-bar">
+          <div class="revealed-counter-badge" title="Letters currently revealed">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="counter-eye-icon">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <span>Letters Revealed: <strong id="hintRevealedCount">0</strong> / <strong id="hintTotalCount">0</strong></span>
+          </div>
+          <div id="autoAssistPill" class="auto-assist-pill" style="display: none;" title="Auto-assistance safety net">
+            <span>🤝 Auto-Assist Active</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action Buttons Row: Hint Button, Need Help?, & New Game Button -->
+      <section class="action-buttons-row" aria-label="Game Controls">
+        <!-- 8. Hint Button (3D Orange with cost badge) -->
+        <button id="hintBtn" class="btn-3d btn-hint" type="button" aria-label="Reveal 1 Letter Hint">
+          <div class="btn-inner">
+            <svg class="btn-inner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18h6"></path>
+              <path d="M10 22h4"></path>
+              <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"></path>
+            </svg>
+            <span class="btn-label">Hint</span>
+            <span class="cost-badge" id="hintBtnBadge">-3 Pts</span>
+          </div>
+        </button>
+
+        <!-- "Need Help?" Button (Opens Smart Hint Hub) -->
+        <button id="needHelpBtn" class="btn-3d btn-need-help" type="button" aria-label="Open Smart Hint Hub">
+          <div class="btn-inner">
+            <svg class="btn-inner-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            <span class="btn-label">Need Help?</span>
+            <span class="hub-badge">HINTS</span>
+          </div>
+        </button>
+
+        <!-- 9. New Game Button (3D Purple with refresh icon) -->
+        <button id="newGameBtn" class="btn-3d btn-new-game" type="button" aria-label="Start New Game">
+          <div class="btn-inner">
+            <svg class="btn-inner-icon refresh-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+              <path d="M3 3v5h5"></path>
+              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+              <path d="M16 21h5v-5"></path>
+            </svg>
+            <span class="btn-label">New Game</span>
+          </div>
+        </button>
+      </section>
+
+      <!-- 6. Interactive Alphabet Keyboard A-Z -->
+      <section class="keyboard-section" aria-label="Alphabet Keyboard">
+        <div id="keyboardContainer" class="keyboard-grid">
+          <!-- 26 Keys dynamically rendered with 3D tactile buttons -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 12. Modals -->
+  <!-- Victory / Winning Modal -->
+  <dialog id="victoryModal" class="game-dialog modal-victory">
+    <div class="modal-card glass-panel">
+      <div class="modal-confetti-badge">
+        <svg class="trophy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+          <path d="M4 22h16"></path>
+          <path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"></path>
+          <path d="M18 14.66V17c0 .55-.45 1-1 1h-2c-.55 0-1-.45-1-1v-2.34"></path>
+          <path d="M6 4h12v7a6 6 0 0 1-12 0V4Z"></path>
+        </svg>
+      </div>
+      <h2 class="modal-title victory-title">Congratulations!</h2>
+      <p class="modal-subtitle">You Won!</p>
+      
+      <div class="modal-word-reveal">
+        <span class="modal-word-label">The word was:</span>
+        <div id="victoryWordDisplay" class="modal-word-text">APPLE</div>
+      </div>
+
+      <div class="modal-bonus-chip">
+        <svg viewBox="0 0 24 24" fill="currentColor" class="bonus-star">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+        <span>Word Completion Bonus: <strong>+10 Points!</strong></span>
+      </div>
+
+      <div class="modal-stats-summary">
+        <div class="stat-pill">
+          <span class="stat-pill-label">Total Score</span>
+          <span id="victoryScoreTotal" class="stat-pill-val">15</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-pill-label">Attempts Left</span>
+          <span id="victoryAttemptsLeft" class="stat-pill-val">4</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="victoryPlayAgainBtn" class="btn-3d btn-primary-modal" type="button">
+          <div class="btn-inner">
+            <span>Play Again</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-inner-icon">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+          </div>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Losing / Game Over Modal -->
+  <dialog id="gameOverModal" class="game-dialog modal-gameover">
+    <div class="modal-card glass-panel">
+      <div class="modal-skull-badge">
+        <svg class="broken-heart-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          <path d="M12 5l-2 5h4l-3 6" stroke="#ffffff" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+      <h2 class="modal-title gameover-title">Game Over!</h2>
+      <p class="modal-subtitle">Out of attempts</p>
+
+      <div class="modal-word-reveal">
+        <span class="modal-word-label">The correct word was:</span>
+        <div id="gameOverWordDisplay" class="modal-word-text error-text">PYTHON</div>
+      </div>
+
+      <p class="modal-encouragement">Don't give up! Every mistake makes you sharper.</p>
+
+      <div class="modal-actions">
+        <button id="gameOverTryAgainBtn" class="btn-3d btn-primary-modal" type="button">
+          <div class="btn-inner">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-inner-icon">
+              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+              <path d="M3 3v5h5"></path>
+            </svg>
+            <span>Try Again</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Statistics Modal -->
+  <dialog id="statsModal" class="game-dialog modal-stats">
+    <div class="modal-card glass-panel">
+      <div class="modal-header-row">
+        <h2 class="modal-title stats-title">Player Statistics</h2>
+        <button id="statsCloseBtn" class="btn-close-modal" type="button" aria-label="Close Statistics">✕</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stats-box">
+          <span id="statPlayed" class="stats-box-num">0</span>
+          <span class="stats-box-label">Played</span>
+        </div>
+        <div class="stats-box">
+          <span id="statWins" class="stats-box-num">0</span>
+          <span class="stats-box-label">Wins</span>
+        </div>
+        <div class="stats-box">
+          <span id="statWinPct" class="stats-box-num">0%</span>
+          <span class="stats-box-label">Win %</span>
+        </div>
+        <div class="stats-box">
+          <span id="statCurrentStreak" class="stats-box-num">0</span>
+          <span class="stats-box-label">Streak</span>
+        </div>
+        <div class="stats-box">
+          <span id="statBestStreak" class="stats-box-num">0</span>
+          <span class="stats-box-label">Max Streak</span>
+        </div>
+        <div class="stats-box highlight-stat">
+          <span id="statHighScore" class="stats-box-num">0</span>
+          <span class="stats-box-label">Best Score</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="statsDismissBtn" class="btn-3d btn-secondary-modal" type="button">
+          <div class="btn-inner">
+            <span>Close</span>
+          </div>
+        </button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Smart Hint Hub Modal ("Need Help?") -->
+  <dialog id="hintsModal" class="game-dialog modal-hints">
+    <div class="modal-card glass-panel hints-modal-card">
+      <div class="modal-header-row">
+        <div class="modal-title-with-badge">
+          <div class="modal-hint-badge">
+            <svg class="lightbulb-icon-large" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 18h6"></path>
+              <path d="M10 22h4"></path>
+              <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"></path>
+            </svg>
+          </div>
+          <div class="modal-title-text-group">
+            <h2 class="modal-title hints-modal-title">Smart Hint Assistant</h2>
+            <p class="modal-subtitle-sm">Never get stuck! Choose your assistance level:</p>
+          </div>
+        </div>
+        <button id="hintsCloseBtn" class="btn-close-modal" type="button" aria-label="Close Hint Hub">✕</button>
+      </div>
+
+      <!-- Current Balance Bar -->
+      <div class="hints-balance-bar">
+        <span class="balance-label">Your Available Points:</span>
+        <div class="balance-pill">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="balance-star">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+          </svg>
+          <strong id="hintModalScoreVal">0</strong> Points
+        </div>
+      </div>
+
+      <!-- In-Modal Feedback / Cost Alert Message -->
+      <div id="hintFeedbackAlert" class="hint-feedback-alert" style="display: none;">
+        <span class="alert-icon">💡</span>
+        <span id="hintFeedbackText" class="alert-text"></span>
+      </div>
+
+      <!-- Progressive Hint Options Grid -->
+      <div class="hint-options-list">
+        <!-- 1. Free Clue -->
+        <div class="hint-option-card card-free-clue">
+          <div class="option-content">
+            <div class="option-header-row">
+              <span class="option-emoji">📖</span>
+              <h3 class="option-name">1. Free Clue – "Show Another Clue"</h3>
+              <span class="badge-pill badge-free">FREE</span>
+            </div>
+            <p class="option-desc">Get a detailed contextual clue and interesting fun facts without revealing any letters.</p>
+          </div>
+          <button id="btnHintFreeClue" class="btn-3d btn-hint-action btn-action-free" type="button">
+            <div class="btn-inner">
+              <span>Show Clue</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- 2. Reveal 1 Letter -->
+        <div class="hint-option-card card-reveal-one">
+          <div class="option-content">
+            <div class="option-header-row">
+              <span class="option-emoji">🔤</span>
+              <h3 class="option-name">2. Reveal a Letter</h3>
+              <span class="badge-pill badge-cost-3">3 PTS</span>
+            </div>
+            <p class="option-desc">Uncovers one random hidden letter and all its matching positions in glowing green.</p>
+          </div>
+          <button id="btnHintRevealOne" class="btn-3d btn-hint-action btn-action-3" type="button">
+            <div class="btn-inner">
+              <span>Reveal 1 Letter (-3)</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- 3. Reveal 2 Letters -->
+        <div class="hint-option-card card-reveal-two">
+          <div class="option-content">
+            <div class="option-header-row">
+              <span class="option-emoji">⚡</span>
+              <h3 class="option-name">3. Reveal More Letters</h3>
+              <span class="badge-pill badge-cost-5">5 PTS</span>
+            </div>
+            <p class="option-desc">Uncovers two additional hidden letter positions when you need a stronger boost.</p>
+          </div>
+          <button id="btnHintRevealTwo" class="btn-3d btn-hint-action btn-action-5" type="button">
+            <div class="btn-inner">
+              <span>Reveal 2 Letters (-5)</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- 4. Emergency Hint: Reveal First Letter -->
+        <div class="hint-option-card card-reveal-first">
+          <div class="option-content">
+            <div class="option-header-row">
+              <span class="option-emoji">🌟</span>
+              <h3 class="option-name">4. Emergency – Reveal First Letter</h3>
+              <span class="badge-pill badge-cost-7">7 PTS</span>
+            </div>
+            <p class="option-desc">Reveals the very first letter of the hidden word so you can deduce the rest!</p>
+          </div>
+          <button id="btnHintRevealFirst" class="btn-3d btn-hint-action btn-action-7" type="button">
+            <div class="btn-inner">
+              <span>Reveal First Letter (-7)</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Floating Toast Notification for Immediate Hint Feedback -->
+  <aside id="hintToast" class="hint-toast glass-panel" aria-live="polite">
+    <div class="toast-icon-wrap" id="toastIcon">💡</div>
+    <div class="toast-body">
+      <strong id="toastTitle" class="toast-title">Hint Activated!</strong>
+      <p id="toastMessage" class="toast-msg">Letter has been revealed.</p>
+    </div>
+  </aside>
+
+  <script src="words.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
+

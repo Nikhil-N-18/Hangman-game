@@ -1,0 +1,2031 @@
+/* ==========================================================================
+   Word Guessing Game - Premium 3D Glassmorphism Stylesheet
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Design Tokens & CSS Variables (Playful Pastel & Glass Aesthetic)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Pastel Light Theme Gradients */
+  --bg-gradient-1: #dbeafe; /* Pastel soft sky blue */
+  --bg-gradient-2: #ede9fe; /* Soft lavender */
+  --bg-gradient-3: #fce7f3; /* Soft cotton candy pink */
+  --bg-gradient-4: #e0e7ff; /* Periwinkle pastel */
+
+  /* Glassmorphism System */
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-bg-subtle: rgba(255, 255, 255, 0.45);
+  --glass-bg-card: rgba(255, 255, 255, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.85);
+  --glass-border-subtle: rgba(255, 255, 255, 0.55);
+  --glass-blur: blur(20px);
+  --glass-blur-heavy: blur(28px);
+  --glass-shadow: 0 20px 45px rgba(110, 125, 175, 0.15), 0 4px 12px rgba(110, 125, 175, 0.08);
+  --glass-shadow-inner: inset 0 2px 3px rgba(255, 255, 255, 0.9), inset 0 -2px 3px rgba(160, 175, 215, 0.2);
+
+  /* Typography Colors */
+  --text-main: #242c44;
+  --text-secondary: #5b6787;
+  --text-muted: #8492b2;
+  --text-light: #ffffff;
+
+  /* Accent Colors & 3D Extrusion Shadows */
+  --color-primary-purple: #8b5cf6;
+  --color-primary-purple-dark: #6d28d9;
+  --color-orange-hint: #f97316;
+  --color-orange-hint-dark: #c2410c;
+  --color-yellow-gold: #f59e0b;
+  --color-yellow-light: #fef08a;
+  --color-green-success: #10b981;
+  --color-green-success-dark: #059669;
+  --color-red-danger: #ef4444;
+  --color-red-danger-dark: #b91c1c;
+  --color-blue-sky: #3b82f6;
+  --color-blue-sky-dark: #1d4ed8;
+
+  /* Keyboard Key Colors */
+  --key-bg-top: #ffffff;
+  --key-bg-bottom: #f1f5f9;
+  --key-border: #cbd5e1;
+  --key-shadow: #94a3b8;
+
+  /* Font Families */
+  --font-family-display: 'Fredoka', cursive, system-ui, sans-serif;
+  --font-family-body: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Radii */
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-xl: 34px;
+  --radius-pill: 9999px;
+}
+
+/* --------------------------------------------------------------------------
+   Reset & Base Styles
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: var(--font-family-body);
+  color: var(--text-main);
+  background: var(--bg-gradient-1);
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  padding: 16px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   1. Animated Gradient & Floating Bubbles Background
+   -------------------------------------------------------------------------- */
+.ambient-background {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.gradient-mesh {
+  position: absolute;
+  inset: -20%;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle at 15% 20%, #dbeafe 0%, transparent 45%),
+              radial-gradient(circle at 85% 25%, #fce7f3 0%, transparent 45%),
+              radial-gradient(circle at 45% 85%, #ede9fe 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, #fed7aa 0%, transparent 40%),
+              linear-gradient(135deg, #e0e7ff 0%, #fdf2f8 50%, #eff6ff 100%);
+  background-size: 200% 200%;
+  animation: moveGradient 18s ease-in-out infinite alternate;
+  opacity: 0.95;
+}
+
+@keyframes moveGradient {
+  0% { background-position: 0% 0%; }
+  50% { background-position: 100% 100%; }
+  100% { background-position: 50% 0%; }
+}
+
+/* 3D Floating Glowing Bubbles/Orbs */
+.floating-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(2px);
+  opacity: 0.7;
+  pointer-events: none;
+  box-shadow: inset -10px -10px 25px rgba(147, 51, 234, 0.25),
+              inset 10px 10px 25px rgba(255, 255, 255, 0.9),
+              0 15px 35px rgba(147, 197, 253, 0.4);
+}
+
+.orb-1 {
+  width: 220px;
+  height: 220px;
+  top: 5%;
+  left: -40px;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #c4b5fd 65%, #a78bfa 100%);
+  animation: floatOrb1 16s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 280px;
+  height: 280px;
+  top: 45%;
+  right: -80px;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #fbcfe8 60%, #f472b6 100%);
+  animation: floatOrb2 20s ease-in-out infinite reverse;
+}
+
+.orb-3 {
+  width: 160px;
+  height: 160px;
+  bottom: 8%;
+  left: 10%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #bae6fd 60%, #60a5fa 100%);
+  animation: floatOrb3 14s ease-in-out infinite;
+}
+
+.orb-4 {
+  width: 120px;
+  height: 120px;
+  top: 25%;
+  right: 18%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #fef08a 60%, #fbbf24 100%);
+  animation: floatOrb1 12s ease-in-out infinite 2s;
+}
+
+.orb-5 {
+  width: 90px;
+  height: 90px;
+  bottom: 25%;
+  right: 25%;
+  background: radial-gradient(circle at 35% 30%, #ffffff, #bbf7d0 60%, #4ade80 100%);
+  animation: floatOrb3 15s ease-in-out infinite 1s;
+}
+
+@keyframes floatOrb1 {
+  0% { transform: translateY(0px) rotate(0deg) scale(1); }
+  50% { transform: translateY(-35px) translateX(25px) rotate(180deg) scale(1.08); }
+  100% { transform: translateY(0px) rotate(360deg) scale(1); }
+}
+
+@keyframes floatOrb2 {
+  0% { transform: translateY(0px) translateX(0px) scale(1); }
+  50% { transform: translateY(40px) translateX(-30px) scale(0.95); }
+  100% { transform: translateY(0px) translateX(0px) scale(1); }
+}
+
+@keyframes floatOrb3 {
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-25px) translateX(-20px) scale(1.05); }
+  100% { transform: translateY(0px) scale(1); }
+}
+
+#particlesCanvas, #confettiCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+#confettiCanvas {
+  position: fixed;
+  z-index: 999;
+}
+
+/* --------------------------------------------------------------------------
+   App Layout & Premium Glass Panels
+   -------------------------------------------------------------------------- */
+.app-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 auto;
+}
+
+/* Glassmorphism Panel Base */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1.5px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), var(--glass-shadow-inner);
+  border-radius: var(--radius-lg);
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* --------------------------------------------------------------------------
+   Top Utility Bar (Selectors, Sound, Stats, Reset Score)
+   -------------------------------------------------------------------------- */
+.top-nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 18px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.selectors-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.custom-select-pill {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px 4px 32px;
+  box-shadow: 0 4px 10px rgba(130, 145, 190, 0.12), inset 0 1px 2px rgba(255, 255, 255, 0.9);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.custom-select-pill:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(130, 145, 190, 0.18);
+}
+
+.custom-select-pill .select-icon {
+  position: absolute;
+  left: 10px;
+  width: 15px;
+  height: 15px;
+  color: var(--color-primary-purple);
+  pointer-events: none;
+}
+
+.custom-select-pill select {
+  border: none;
+  background: transparent;
+  font-family: var(--font-family-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+  outline: none;
+  cursor: pointer;
+  appearance: auto;
+  padding-right: 4px;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 3D Round Utility Buttons (Sound, Stats) */
+.btn-icon-3d {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  box-shadow: 0 4px 0 #cbd5e1, 0 6px 14px rgba(100, 116, 139, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.btn-icon-3d svg {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-icon-3d:hover {
+  color: var(--color-primary-purple);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #cbd5e1, 0 8px 18px rgba(139, 92, 246, 0.25);
+}
+
+.btn-icon-3d:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #cbd5e1, 0 3px 6px rgba(100, 116, 139, 0.2);
+}
+
+/* Sound Active Highlight */
+.btn-icon-3d.sound-active {
+  color: var(--color-primary-purple-dark);
+  background: linear-gradient(180deg, #ede9fe 0%, #ddd6fe 100%);
+  box-shadow: 0 4px 0 #a78bfa, 0 6px 14px rgba(139, 92, 246, 0.28);
+}
+
+/* 10. Reset Score 3D Button */
+.btn-reset-3d {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  background: linear-gradient(180deg, #fee2e2 0%, #fecaca 100%);
+  box-shadow: 0 4px 0 #f87171, 0 6px 14px rgba(239, 68, 68, 0.22);
+  color: #991b1b;
+  font-family: var(--font-family-body);
+  font-weight: 700;
+  font-size: 0.84rem;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+}
+
+.btn-reset-3d .btn-icon-svg {
+  width: 15px;
+  height: 15px;
+}
+
+.btn-reset-3d:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #f87171, 0 8px 18px rgba(239, 68, 68, 0.32);
+}
+
+.btn-reset-3d:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #f87171, 0 3px 6px rgba(239, 68, 68, 0.2);
+}
+
+/* --------------------------------------------------------------------------
+   Main Game Console
+   -------------------------------------------------------------------------- */
+.game-console {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px 28px;
+  background: var(--glass-bg-card);
+  animation: consoleEntrance 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.2) forwards;
+}
+
+@keyframes consoleEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Game Header (Controller Icon, Word Guessing Game + Crown)
+   -------------------------------------------------------------------------- */
+.game-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 6px 0 10px;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* 3D Game Controller Badge */
+.game-icon-badge {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 0 #5b21b6, 0 10px 20px rgba(124, 58, 237, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  animation: gentleFloat 4s ease-in-out infinite;
+}
+
+.game-controller-icon {
+  width: 28px;
+  height: 28px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Title & Yellow GAME Highlight */
+.game-title {
+  font-family: var(--font-family-display);
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-main);
+  text-shadow: 0 2px 4px rgba(148, 163, 184, 0.3);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.title-highlight {
+  position: relative;
+  display: inline-block;
+  background: linear-gradient(180deg, #fef08a 0%, #f59e0b 80%, #d97706 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 3px 0 rgba(180, 83, 9, 0.35));
+  font-weight: 700;
+  padding: 0 4px;
+}
+
+/* Small Crown Decoration */
+.crown-icon {
+  position: absolute;
+  top: -16px;
+  right: -8px;
+  width: 24px;
+  height: 24px;
+  color: #fbbf24;
+  filter: drop-shadow(0 2px 4px rgba(217, 119, 6, 0.5));
+  transform: rotate(16deg);
+  animation: crownWiggle 3.5s ease-in-out infinite;
+}
+
+@keyframes crownWiggle {
+  0%, 100% { transform: rotate(16deg); }
+  50% { transform: rotate(26deg) translateY(-2px); }
+}
+
+/* --------------------------------------------------------------------------
+   3. Game Dashboard (Score Card & Attempts Card)
+   -------------------------------------------------------------------------- */
+.game-dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 16px;
+}
+
+.dash-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 20px rgba(120, 135, 180, 0.12),
+              inset 0 1px 2px rgba(255, 255, 255, 0.95);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.dash-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(120, 135, 180, 0.16);
+}
+
+.card-icon-container {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+}
+
+/* Star Icon in Score Card */
+.star-icon-glow {
+  background: linear-gradient(135deg, #fef08a 0%, #f59e0b 100%);
+  box-shadow: 0 4px 0 #d97706, 0 6px 14px rgba(245, 158, 11, 0.35);
+  color: #ffffff;
+}
+
+.star-icon {
+  width: 26px;
+  height: 26px;
+  animation: starTwinkle 3s ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(8deg); }
+}
+
+/* Heart Icon in Attempts Card */
+.heart-icon-glow {
+  background: linear-gradient(135deg, #fda4af 0%, #f43f5e 100%);
+  box-shadow: 0 4px 0 #be123c, 0 6px 14px rgba(244, 63, 94, 0.35);
+  color: #ffffff;
+}
+
+.heart-icon {
+  width: 24px;
+  height: 24px;
+  animation: heartPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes heartPulse {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.15); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.1); }
+}
+
+.card-details {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.card-label {
+  font-family: var(--font-family-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.card-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  position: relative;
+}
+
+.card-value {
+  font-family: var(--font-family-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.1;
+  letter-spacing: 0.5px;
+}
+
+/* Score Delta Floating Animation (+1, +2, +10, -3) */
+.score-delta-badge {
+  font-family: var(--font-family-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  background: #22c55e;
+  color: #ffffff;
+  opacity: 0;
+  transform: translateY(0);
+  pointer-events: none;
+  box-shadow: 0 3px 8px rgba(34, 197, 94, 0.3);
+}
+
+.score-delta-badge.pop-positive {
+  animation: floatScoreGain 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  background: linear-gradient(135deg, #4ade80, #16a34a);
+}
+
+.score-delta-badge.pop-negative {
+  animation: floatScoreLoss 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  background: linear-gradient(135deg, #fb923c, #ea580c);
+}
+
+@keyframes floatScoreGain {
+  0% { opacity: 0; transform: translateY(6px) scale(0.8); }
+  25% { opacity: 1; transform: translateY(-4px) scale(1.1); }
+  80% { opacity: 1; transform: translateY(-16px) scale(1); }
+  100% { opacity: 0; transform: translateY(-24px) scale(0.9); }
+}
+
+@keyframes floatScoreLoss {
+  0% { opacity: 0; transform: translateY(6px) scale(0.8); }
+  25% { opacity: 1; transform: translateY(-4px) scale(1.1); }
+  80% { opacity: 1; transform: translateY(-16px) scale(1); }
+  100% { opacity: 0; transform: translateY(-24px) scale(0.9); }
+}
+
+.attempts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.attempts-counter {
+  font-family: var(--font-family-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Attempts Visual Progress Bar */
+.progress-track {
+  width: 100%;
+  height: 10px;
+  background: rgba(226, 232, 240, 0.85);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.08);
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+  transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.4s ease;
+  box-shadow: 0 1px 4px rgba(16, 185, 129, 0.4);
+}
+
+.progress-fill.warning {
+  background: linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%);
+  box-shadow: 0 1px 4px rgba(245, 158, 11, 0.4);
+}
+
+.progress-fill.danger {
+  background: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
+  box-shadow: 0 1px 4px rgba(239, 68, 68, 0.4);
+  animation: pulseDanger 1.2s ease infinite;
+}
+
+@keyframes pulseDanger {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
+}
+
+/* --------------------------------------------------------------------------
+   4. Hint Section (Soft Lavender Glass Card with Lightbulb)
+   -------------------------------------------------------------------------- */
+.hint-card {
+  padding: 16px 20px;
+  background: rgba(243, 232, 255, 0.65);
+  border: 1.5px solid rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(168, 85, 247, 0.12),
+              inset 0 1px 2px rgba(255, 255, 255, 0.95);
+  position: relative;
+  overflow: hidden;
+}
+
+.hint-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.hint-icon-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fef08a 0%, #fbbf24 100%);
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 3px 0 #d97706, 0 4px 10px rgba(245, 158, 11, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #78350f;
+}
+
+.lightbulb-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.hint-tag {
+  font-family: var(--font-family-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #7e22ce;
+}
+
+.hint-category-badge {
+  font-family: var(--font-family-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  background: rgba(139, 92, 246, 0.15);
+  color: #6d28d9;
+  border: 1px solid rgba(139, 92, 246, 0.25);
+}
+
+/* Quick Free Clue Pill Button */
+.btn-extra-clue-pill {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1.5px solid rgba(139, 92, 246, 0.35);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-family: var(--font-family-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #6d28d9;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(139, 92, 246, 0.12);
+  transition: all 0.2s ease;
+}
+
+.btn-extra-clue-pill:hover {
+  background: #ede9fe;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(139, 92, 246, 0.22);
+}
+
+.btn-extra-clue-pill .clue-sparkle-icon {
+  width: 14px;
+  height: 14px;
+  color: #8b5cf6;
+}
+
+.hint-description {
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #475569;
+  line-height: 1.45;
+  padding-left: 2px;
+}
+
+/* Extra Detailed Clue Box */
+.extra-clue-box {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1.5px solid rgba(192, 132, 252, 0.45);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 3px 8px rgba(168, 85, 247, 0.08);
+  animation: clueSlideDown 0.35s ease-out;
+}
+
+@keyframes clueSlideDown {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.extra-clue-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #7c3aed;
+  margin-bottom: 3px;
+}
+
+.extra-clue-description {
+  font-size: 0.92rem;
+  color: #334155;
+  line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   5. Hidden Word Display (Individual 3D Rounded Rectangular Letter Boxes)
+   -------------------------------------------------------------------------- */
+.word-display-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+  min-height: 80px;
+  gap: 12px;
+}
+
+.word-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+
+/* Word Status & Revealed Counter Bar */
+.word-status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.revealed-counter-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  border-radius: var(--radius-pill);
+  padding: 4px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  box-shadow: 0 4px 10px rgba(100, 116, 139, 0.1);
+}
+
+.revealed-counter-badge strong {
+  color: #059669;
+  font-weight: 700;
+}
+
+.counter-eye-icon {
+  width: 16px;
+  height: 16px;
+  color: #10b981;
+}
+
+.auto-assist-pill {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 1px solid #fbbf24;
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #92400e;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+  animation: pulseAssist 2s infinite;
+}
+
+@keyframes pulseAssist {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+/* Individual 3D Letter Box */
+.letter-box {
+  width: clamp(42px, 7vw, 56px);
+  height: clamp(52px, 8.5vw, 68px);
+  perspective: 1000px;
+  user-select: none;
+}
+
+.letter-box-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-style: preserve-3d;
+}
+
+.letter-box.revealed .letter-box-inner {
+  transform: rotateY(180deg);
+}
+
+/* Front & Back Tile Faces */
+.letter-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-md);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-display);
+  font-size: clamp(1.4rem, 4vw, 1.9rem);
+  font-weight: 700;
+}
+
+/* Front Face: Blank unguessed 3D box */
+.letter-face-front {
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 6px 0 #cbd5e1,
+              0 8px 16px rgba(100, 116, 139, 0.15),
+              inset 0 2px 3px rgba(255, 255, 255, 0.95);
+  color: transparent;
+}
+
+.letter-face-front::after {
+  content: '';
+  width: 40%;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: #cbd5e1;
+  box-shadow: 0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+/* Back Face: Revealed 3D Letter with Soft Green Glow */
+.letter-face-back {
+  background: linear-gradient(180deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 2px solid #86efac;
+  box-shadow: 0 6px 0 #10b981,
+              0 10px 22px rgba(16, 185, 129, 0.35),
+              inset 0 2px 4px rgba(255, 255, 255, 0.9);
+  color: #065f46;
+  transform: rotateY(180deg);
+}
+
+/* Revealed Letter Bounce & Glow */
+.letter-box.revealed .letter-face-back {
+  animation: revealPulse 0.5s ease-out;
+}
+
+@keyframes revealPulse {
+  0% { transform: rotateY(180deg) scale(0.85); box-shadow: 0 6px 0 #10b981, 0 0 0 rgba(16, 185, 129, 0); }
+  50% { transform: rotateY(180deg) scale(1.12); box-shadow: 0 6px 0 #10b981, 0 0 24px rgba(16, 185, 129, 0.6); }
+  100% { transform: rotateY(180deg) scale(1); box-shadow: 0 6px 0 #10b981, 0 10px 22px rgba(16, 185, 129, 0.35); }
+}
+
+/* Letter Wave Celebration on Win */
+.letter-box.wave-bounce {
+  animation: waveBounce 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes waveBounce {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-12px); }
+}
+
+/* --------------------------------------------------------------------------
+   Action Buttons Row (Hint Button & New Game Button)
+   -------------------------------------------------------------------------- */
+.action-buttons-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* 3D Button Base System */
+.btn-3d {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  outline: none;
+  font-family: var(--font-family-display);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  user-select: none;
+  transition: transform 0.15s ease, filter 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-3d .btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-3d .btn-inner-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* 8. Hint Button (3D Orange with cost badge) */
+.btn-hint {
+  background: var(--color-orange-hint-dark);
+  box-shadow: 0 6px 0 #9a3412, 0 10px 20px rgba(194, 65, 12, 0.3);
+}
+
+.btn-hint .btn-inner {
+  background: linear-gradient(180deg, #fb923c 0%, #ea580c 100%);
+  color: #ffffff;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.55);
+}
+
+.btn-hint:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #9a3412, 0 14px 26px rgba(194, 65, 12, 0.4);
+}
+
+.btn-hint:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #9a3412, 0 4px 8px rgba(194, 65, 12, 0.3);
+}
+
+.btn-hint .cost-badge {
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* "Need Help?" 3D Button */
+.btn-need-help {
+  background: #0284c7;
+  box-shadow: 0 6px 0 #0369a1, 0 10px 20px rgba(2, 132, 199, 0.32);
+}
+
+.btn-need-help .btn-inner {
+  background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+  color: #ffffff;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.6);
+}
+
+.btn-need-help:hover:not(:disabled) {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #0369a1, 0 14px 26px rgba(2, 132, 199, 0.42);
+}
+
+.btn-need-help:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #0369a1, 0 4px 8px rgba(2, 132, 199, 0.3);
+}
+
+.btn-need-help .hub-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+/* Hint Button disabled state when round finished or all revealed */
+.btn-hint:disabled, .btn-need-help:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: grayscale(40%);
+  transform: none;
+  box-shadow: 0 4px 0 #9a3412, 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Pulsing effect when hint is active/available */
+.btn-hint.pulse-hint {
+  animation: hintPulseGlow 2.5s infinite;
+}
+
+@keyframes hintPulseGlow {
+  0%, 100% { box-shadow: 0 6px 0 #9a3412, 0 10px 20px rgba(194, 65, 12, 0.3); }
+  50% { box-shadow: 0 6px 0 #9a3412, 0 12px 28px rgba(249, 115, 22, 0.6); }
+}
+
+/* 9. New Game Button (3D Purple with refresh icon) */
+.btn-new-game {
+  background: var(--color-primary-purple-dark);
+  box-shadow: 0 6px 0 #5b21b6, 0 10px 20px rgba(109, 40, 217, 0.32);
+}
+
+.btn-new-game .btn-inner {
+  background: linear-gradient(180deg, #a78bfa 0%, #7c3aed 100%);
+  color: #ffffff;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.55);
+}
+
+.btn-new-game:hover {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #5b21b6, 0 14px 26px rgba(109, 40, 217, 0.42);
+}
+
+.btn-new-game:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #5b21b6, 0 4px 8px rgba(109, 40, 217, 0.3);
+}
+
+.btn-new-game:hover .refresh-icon {
+  animation: spinRefresh 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes spinRefresh {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(180deg); }
+}
+
+/* --------------------------------------------------------------------------
+   6. Interactive Alphabet Keyboard (A-Z)
+   -------------------------------------------------------------------------- */
+.keyboard-section {
+  display: flex;
+  justify-content: center;
+  padding: 4px 0 8px;
+}
+
+.keyboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 620px;
+}
+
+.keyboard-row {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+  width: 100%;
+}
+
+/* 3D Alphabet Key */
+.key-btn {
+  flex: 1;
+  max-width: 54px;
+  height: 50px;
+  background: var(--key-shadow);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  user-select: none;
+  box-shadow: 0 5px 0 #94a3b8, 0 7px 14px rgba(100, 116, 139, 0.2);
+  transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.15s ease;
+}
+
+.key-btn .key-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  border-top: 1.5px solid rgba(255, 255, 255, 0.9);
+  font-family: var(--font-family-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-main);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.key-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 0 #94a3b8, 0 10px 18px rgba(100, 116, 139, 0.25);
+}
+
+.key-btn:active:not(:disabled) {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #94a3b8, 0 3px 6px rgba(100, 116, 139, 0.2);
+}
+
+/* Correct Letter State: Candy Green with Bounce & Glow */
+.key-btn.correct {
+  background: #15803d;
+  box-shadow: 0 4px 0 #15803d, 0 6px 16px rgba(34, 197, 94, 0.35);
+  cursor: default;
+  transform: none;
+  animation: keyBounce 0.4s ease-out;
+}
+
+.key-btn.correct .key-inner {
+  background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+  color: #ffffff;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.7);
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.8);
+}
+
+@keyframes keyBounce {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* Incorrect Letter State: Shakes and brief red flash / muted grey-red */
+.key-btn.incorrect {
+  background: #b91c1c;
+  box-shadow: 0 3px 0 #991b1b, 0 4px 10px rgba(239, 68, 68, 0.2);
+  cursor: default;
+  opacity: 0.75;
+  transform: none;
+  animation: keyShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+.key-btn.incorrect .key-inner {
+  background: linear-gradient(180deg, #f87171 0%, #ef4444 100%);
+  color: #ffffff;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.5);
+}
+
+@keyframes keyShake {
+  10%, 90% { transform: translate3d(-1px, 0, 0); }
+  20%, 80% { transform: translate3d(2px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
+  40%, 60% { transform: translate3d(3px, 0, 0); }
+}
+
+/* Disabled State */
+.key-btn:disabled {
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------------------------
+   12. Modals (Victory, Game Over, Statistics)
+   -------------------------------------------------------------------------- */
+.game-dialog {
+  border: none;
+  background: transparent;
+  padding: 0;
+  max-width: 480px;
+  width: 90%;
+  margin: auto;
+  outline: none;
+  overflow: visible;
+}
+
+.game-dialog::backdrop {
+  background: rgba(30, 41, 59, 0.35);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: backdropFadeIn 0.3s ease-out forwards;
+}
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 32px 28px;
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.92);
+  border: 2px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 25px 60px rgba(70, 80, 130, 0.25),
+              0 10px 20px rgba(70, 80, 130, 0.12),
+              inset 0 2px 4px rgba(255, 255, 255, 0.95);
+  animation: modalPopIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes modalPopIn {
+  0% { transform: scale(0.8) translateY(20px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* Modal Icon Badges */
+.modal-confetti-badge, .modal-skull-badge {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  border: 3px solid #ffffff;
+}
+
+.modal-confetti-badge {
+  background: linear-gradient(135deg, #fef08a 0%, #f59e0b 100%);
+  box-shadow: 0 6px 0 #d97706, 0 10px 24px rgba(245, 158, 11, 0.45);
+  color: #ffffff;
+  animation: badgeTrophyBounce 1.6s ease-in-out infinite alternate;
+}
+
+.trophy-icon {
+  width: 38px;
+  height: 38px;
+}
+
+@keyframes badgeTrophyBounce {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.1) rotate(6deg); }
+  100% { transform: scale(1) rotate(-6deg); }
+}
+
+.modal-skull-badge {
+  background: linear-gradient(135deg, #fda4af 0%, #ef4444 100%);
+  box-shadow: 0 6px 0 #b91c1c, 0 10px 24px rgba(239, 68, 68, 0.4);
+  color: #ffffff;
+}
+
+.broken-heart-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.modal-title {
+  font-family: var(--font-family-display);
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.victory-title {
+  background: linear-gradient(180deg, #10b981 0%, #059669 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.gameover-title {
+  background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.modal-subtitle {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+/* Word Reveal Card inside Modal */
+.modal-word-reveal {
+  background: rgba(241, 245, 249, 0.85);
+  border: 1.5px solid rgba(226, 232, 240, 0.9);
+  border-radius: var(--radius-md);
+  padding: 12px 20px;
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.modal-word-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.modal-word-text {
+  font-family: var(--font-family-display);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #15803d;
+}
+
+.modal-word-text.error-text {
+  color: #b91c1c;
+}
+
+/* Word Completion Bonus Chip */
+.modal-bonus-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 1.5px solid #fbbf24;
+  color: #92400e;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.bonus-star {
+  width: 18px;
+  height: 18px;
+  color: #f59e0b;
+}
+
+.modal-encouragement {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  margin-bottom: 18px;
+}
+
+.modal-stats-summary {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.stat-pill {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1.5px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.stat-pill-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.stat-pill-val {
+  font-family: var(--font-family-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Modal Actions */
+.modal-actions {
+  width: 100%;
+}
+
+.btn-primary-modal {
+  width: 100%;
+  background: #16a34a;
+  box-shadow: 0 6px 0 #15803d, 0 10px 20px rgba(22, 163, 74, 0.35);
+}
+
+.btn-primary-modal .btn-inner {
+  background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+  color: #ffffff;
+  font-size: 1.15rem;
+  padding: 14px 28px;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.65);
+}
+
+.btn-primary-modal:hover {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #15803d, 0 14px 28px rgba(22, 163, 74, 0.45);
+}
+
+.btn-primary-modal:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #15803d, 0 4px 8px rgba(22, 163, 74, 0.3);
+}
+
+/* Statistics Modal Specific Styles */
+.modal-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.stats-title {
+  font-size: 1.6rem;
+  color: var(--text-main);
+}
+
+.btn-close-modal {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #f1f5f9;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-close-modal:hover {
+  background: #e2e8f0;
+  color: var(--text-main);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 22px;
+}
+
+.stats-box {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1.5px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 14px 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+}
+
+.stats-box.highlight-stat {
+  background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+  border-color: #c4b5fd;
+}
+
+.stats-box-num {
+  font-family: var(--font-family-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-primary-purple-dark);
+}
+
+.stats-box-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.btn-secondary-modal {
+  width: 100%;
+  background: #64748b;
+  box-shadow: 0 5px 0 #475569, 0 8px 16px rgba(100, 116, 139, 0.25);
+}
+
+.btn-secondary-modal .btn-inner {
+  background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%);
+  color: #ffffff;
+  padding: 12px;
+  border-top: 1.5px solid rgba(255, 255, 255, 0.6);
+}
+
+/* --------------------------------------------------------------------------
+   Smart Hint Hub Modal (.modal-hints)
+   -------------------------------------------------------------------------- */
+.hints-modal-card {
+  max-width: 580px;
+  width: 95%;
+  padding: 24px 22px;
+}
+
+.modal-title-with-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+}
+
+.modal-hint-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fef08a 0%, #f59e0b 100%);
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 0 #d97706, 0 6px 14px rgba(245, 158, 11, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.lightbulb-icon-large {
+  width: 24px;
+  height: 24px;
+}
+
+.hints-modal-title {
+  font-size: 1.45rem;
+  color: var(--text-main);
+  line-height: 1.2;
+}
+
+.modal-subtitle-sm {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* Balance bar */
+.hints-balance-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: rgba(241, 245, 249, 0.85);
+  border: 1.5px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  padding: 8px 14px;
+  margin: 14px 0 10px;
+}
+
+.balance-label {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.balance-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.balance-star {
+  width: 16px;
+  height: 16px;
+  color: #f59e0b;
+}
+
+/* Feedback Alert Message */
+.hint-feedback-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: #fffbeb;
+  border: 1.5px solid #fde68a;
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  margin-bottom: 12px;
+  color: #92400e;
+  font-size: 0.85rem;
+  font-weight: 600;
+  animation: feedbackSlideIn 0.3s ease-out;
+  text-align: left;
+}
+
+@keyframes feedbackSlideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.alert-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* Hint Options List */
+.hint-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.hint-option-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1.5px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(100, 116, 139, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  text-align: left;
+}
+
+.hint-option-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(100, 116, 139, 0.12);
+}
+
+.card-free-clue {
+  border-left: 4px solid #10b981;
+}
+
+.card-reveal-one {
+  border-left: 4px solid #f97316;
+}
+
+.card-reveal-two {
+  border-left: 4px solid #8b5cf6;
+}
+
+.card-reveal-first {
+  border-left: 4px solid #f59e0b;
+}
+
+.option-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.option-header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.option-emoji {
+  font-size: 1.1rem;
+}
+
+.option-name {
+  font-family: var(--font-family-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.badge-pill {
+  font-family: var(--font-family-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+}
+
+.badge-free {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.badge-cost-3 {
+  background: #ffedd5;
+  color: #c2410c;
+  border: 1px solid #fdba74;
+}
+
+.badge-cost-5 {
+  background: #ede9fe;
+  color: #6d28d9;
+  border: 1px solid #c4b5fd;
+}
+
+.badge-cost-7 {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fcd34d;
+}
+
+.option-desc {
+  font-size: 0.8rem;
+  color: #64748b;
+  line-height: 1.35;
+}
+
+/* Action buttons inside hint cards */
+.btn-hint-action {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.btn-hint-action .btn-inner {
+  padding: 8px 14px;
+  font-size: 0.82rem;
+}
+
+.btn-action-free {
+  background: #16a34a;
+  box-shadow: 0 4px 0 #15803d, 0 6px 12px rgba(22, 163, 74, 0.25);
+}
+.btn-action-free .btn-inner {
+  background: linear-gradient(180deg, #4ade80, #22c55e);
+  color: #ffffff;
+}
+
+.btn-action-3 {
+  background: #c2410c;
+  box-shadow: 0 4px 0 #9a3412, 0 6px 12px rgba(194, 65, 12, 0.25);
+}
+.btn-action-3 .btn-inner {
+  background: linear-gradient(180deg, #fb923c, #ea580c);
+  color: #ffffff;
+}
+
+.btn-action-5 {
+  background: #6d28d9;
+  box-shadow: 0 4px 0 #5b21b6, 0 6px 12px rgba(109, 40, 217, 0.25);
+}
+.btn-action-5 .btn-inner {
+  background: linear-gradient(180deg, #a78bfa, #7c3aed);
+  color: #ffffff;
+}
+
+.btn-action-7 {
+  background: #b45309;
+  box-shadow: 0 4px 0 #78350f, 0 6px 12px rgba(180, 83, 9, 0.25);
+}
+.btn-action-7 .btn-inner {
+  background: linear-gradient(180deg, #fbbf24, #d97706);
+  color: #ffffff;
+}
+
+/* Disabled state inside hint card */
+.btn-hint-action:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: grayscale(40%);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Floating Toast Notification */
+.hint-toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 22px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.96);
+  border: 2px solid #86efac;
+  box-shadow: 0 16px 36px rgba(16, 185, 129, 0.28), 0 4px 12px rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease;
+}
+
+.hint-toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast-icon-wrap {
+  font-size: 1.4rem;
+}
+
+.toast-body {
+  text-align: left;
+}
+
+.toast-title {
+  display: block;
+  font-family: var(--font-family-display);
+  font-size: 0.92rem;
+  color: #065f46;
+}
+
+.toast-msg {
+  font-size: 0.82rem;
+  color: #475569;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Design (Mobile, Tablet, Desktop)
+   -------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  body {
+    padding: 10px;
+  }
+
+  .app-wrapper {
+    gap: 12px;
+  }
+
+  .top-nav-bar {
+    padding: 10px 14px;
+    gap: 10px;
+  }
+
+  .selectors-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .select-wrapper {
+    flex: 1;
+  }
+
+  .custom-select-pill {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .custom-select-pill select {
+    width: 100%;
+  }
+
+  .nav-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .game-console {
+    padding: 18px 14px;
+    gap: 16px;
+  }
+
+  .game-dashboard {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .dash-card {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+
+  .card-icon-container {
+    width: 38px;
+    height: 38px;
+  }
+
+  .star-icon, .heart-icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .card-value {
+    font-size: 1.5rem;
+  }
+
+  .word-container {
+    gap: 6px;
+  }
+
+  .letter-box {
+    width: clamp(34px, 8.5vw, 44px);
+    height: clamp(44px, 11vw, 54px);
+  }
+
+  .keyboard-grid {
+    gap: 6px;
+  }
+
+  .keyboard-row {
+    gap: 4px;
+  }
+
+  .key-btn {
+    height: 44px;
+    max-width: none;
+  }
+
+  .key-btn .key-inner {
+    font-size: 1.05rem;
+  }
+
+  .action-buttons-row {
+    gap: 10px;
+  }
+
+  .btn-3d .btn-inner {
+    padding: 10px 18px;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .game-title {
+    font-size: 1.5rem;
+  }
+
+  .game-icon-badge {
+    width: 44px;
+    height: 44px;
+  }
+
+  .letter-box {
+    width: clamp(28px, 8vw, 36px);
+    height: clamp(38px, 10vw, 46px);
+  }
+
+  .key-btn {
+    height: 40px;
+  }
+
+  .key-btn .key-inner {
+    font-size: 0.92rem;
+  }
+}
+
